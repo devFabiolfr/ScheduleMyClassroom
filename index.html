@@ -1,37 +1,87 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendário de Aulas</title>
-    <link rel="stylesheet" href="estilo.css">
+    <title>Calendário de Eventos Professores</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Calendário de Aulas</h1>
-        <form id="form">
-            <label for="semestre">Semestre:</label>
-            <input type="text" id="semestre" required>
-
-            <label for="disciplina">Disciplina:</label>
-            <input type="text" id="disciplina" required>
-
-            <label for="dia">Dia da Semana:</label>
-            <input type="text" id="dia" required>
-
-            <label for="horario">Horário:</label>
-            <input type="text" id="horario" required>
-
-            <label for="carga-horaria">Carga Horária:</label>
-            <input type="number" id="carga-horaria" required>
-
-            <button type="submit">Adicionar Aula</button>
-        </form>
-
-        <h2>Aulas Agendadas</h2>
-        <ul id="aulas-list"></ul>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Calendário de Eventos Professores</h1>
+        
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <button id="prevMonth" class="btn btn-outline-primary">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h4 id="currentMonthYear" class="mb-0 text-center">Mês Ano</h4>
+                        <button id="nextMonth" class="btn btn-outline-primary">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="calendar-header d-flex">
+                            <div class="day-header">Dom</div>
+                            <div class="day-header">Seg</div>
+                            <div class="day-header">Ter</div>
+                            <div class="day-header">Qua</div>
+                            <div class="day-header">Qui</div>
+                            <div class="day-header">Sex</div>
+                            <div class="day-header">Sáb</div>
+                        </div>
+                        <div id="calendarGrid" class="calendar-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal para adicionar eventos -->
+        <div class="modal fade" id="eventModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">Adicionar Evento</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="eventForm">
+                            <div class="mb-3">
+                                <label for="eventTitle" class="form-label">Título do Evento</label>
+                                <input type="text" class="form-control" id="eventTitle" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="eventDate" class="form-label">Data</label>
+                                <input type="date" class="form-control" id="eventDate" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="eventDescription" class="form-label">Descrição</label>
+                                <textarea class="form-control" id="eventDescription" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="eventColor" class="form-label">Cor do Evento</label>
+                                <input type="color" class="form-control form-control-color" id="eventColor" value="#0d6efd">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="deleteEventBtn" style="display: none;">Excluir</button>
+                        <button type="button" class="btn btn-primary" id="saveEventBtn">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Bootstrap JS e dependências -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

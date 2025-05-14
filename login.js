@@ -49,3 +49,42 @@ document.addEventListener('DOMContentLoaded', function() {
         this.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.1)';
     });
 });
+// Validação do formulário de registro
+if (document.getElementById('formularioRegistro')) {
+    const formularioRegistro = document.getElementById('formularioRegistro');
+    
+    formularioRegistro.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const senha = document.getElementById('senha').value;
+        const confirmarSenha = document.getElementById('confirmarSenha').value;
+        
+        if (senha !== confirmarSenha) {
+            alert('As senhas não coincidem!');
+            return;
+        }
+        
+        // Mostrar loading no botão
+        const btnSubmit = this.querySelector('button[type="submit"]');
+        const originalText = btnSubmit.innerHTML;
+        btnSubmit.innerHTML = '<span class="loading-spinner"></span> Registrando...';
+        btnSubmit.disabled = true;
+        
+        // Simular cadastro (substituir por AJAX em produção)
+        setTimeout(function() {
+            alert('Cadastro realizado com sucesso! Redirecionando para login...');
+            window.location.href = 'login.html';
+        }, 2000);
+    });
+    
+    // Toggle para mostrar/ocultar senha no registro
+    const toggleSenhaRegistro = document.getElementById('toggleSenha');
+    if (toggleSenhaRegistro) {
+        toggleSenhaRegistro.addEventListener('click', function() {
+            const senhaInput = document.getElementById('senha');
+            const type = senhaInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            senhaInput.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+    }
+}

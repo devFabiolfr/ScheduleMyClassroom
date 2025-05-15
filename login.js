@@ -1,14 +1,93 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. Configuração do toggle de senha (para login e registro)
-    const toggleSenha = document.getElementById('toggleSenha');
-    if (toggleSenha) {
-        const senhaInput = document.getElementById('senha');
-        toggleSenha.addEventListener('click', function() {
-            const type = senhaInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            senhaInput.setAttribute('type', type);
-            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+    // Banco de dados simulado (armazenado no localStorage)
+    if (!localStorage.getItem('usuariosRegistrados')) {
+        localStorage.setItem('usuariosRegistrados', JSON.stringify([]));
+    }
+
+    // Função para registrar usuário
+    if (document.getElementById('formularioRegistro')) {
+        const formularioRegistro = document.getElementById('formularioRegistro');
+        
+        formularioRegistro.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nome = document.getElementById('nomeCompleto').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const matricula = document.getElementById('matricula').value.trim();
+            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+            const senha = document.getElementById('senha').value;
+            
+            // Validações
+            if (!validarCPF(cpf)) {
+                alert('CPF inválido!');
+                return;
+            }
+            
+            if (senha.length < 8) {
+                alert('A senha deve ter no mínimo 8 caracteres!');
+                return;
+            }
+            
+            // Verifica se usuário já existe
+            const usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados'));
+            const usuarioExistente = usuarios.find(u => u.email === email || u.matricula === matricula || u.cpf === cpf);
+            
+            if (usuarioExistente) {
+                alert('Usuário já cadastrado com estes dados!');
+                return;
+            }
+            
+            // Adiciona novo usuário
+            usuarios.push({
+                nome,
+                email,
+                matricula,
+                cpf,
+                senha // Em produção, isso deveria ser uma hash (não armazene senhas em claro!)
+            });
+            
+            localStorage.setItem('usuariosRegistrados', JSON.stringify(usuarios));
+            
+            alert('Cadastro realizado com sucesso!');
+            window.location.href = 'login.html';
         });
     }
+
+    // Função para login
+    if (document.getElementById('formularioLogin')) {
+        const formularioLogin = document.getElementById('formularioLogin');
+        
+        formularioLogin.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const matricula = document.getElementById('matricula').value.trim();
+            const senha = document.getElementById('senha').value.trim();
+            
+            // Busca usuário
+            const usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados'));
+            const usuario = usuarios.find(u => u.matricula === matricula && u.senha === senha);
+            
+            if (usuario) {
+                // Salva sessão (simulado)
+                sessionStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+                
+                // Redireciona
+                window.location.href = 'index.html';
+            } else {
+                alert('Matrícula ou senha incorretas!');
+            }
+        });
+    }
+
+    // Função para verificar se o usuário está logado (protege páginas restritas)
+    function verificarAutenticacao() {
+        if (!sessionStorage.getItem('usuarioLogado') && window.location.pathname.includes('index.html')) {
+            window.location.href = 'login.html';
+        }
+    }
+    
+    // Verifica ao carregar a página
+    verificarAutenticacao();
 
     // 2. Validador de CPF (função corrigida)
     function validarCPF(cpf) {

@@ -137,3 +137,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Validação do formulário de recuperação de senha
+if (document.getElementById('formularioRecuperacao')) {
+    const formularioRecuperacao = document.getElementById('formularioRecuperacao');
+    
+    formularioRecuperacao.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        if (!emailRegex.test(email)) {
+            alert('Por favor, insira um e-mail válido!');
+            return;
+        }
+        
+        // Mostrar loading no botão
+        const btnSubmit = this.querySelector('button[type="submit"]');
+        const originalText = btnSubmit.innerHTML;
+        btnSubmit.innerHTML = '<span class="loading-spinner"></span> Enviando...';
+        btnSubmit.disabled = true;
+        
+        // Simular envio (substituir por AJAX em produção)
+        setTimeout(function() {
+            alert(`Link de recuperação enviado para ${email}\n(Simulação - em produção seria enviado por e-mail)`);
+            btnSubmit.innerHTML = originalText;
+            btnSubmit.disabled = false;
+        }, 2000);
+    });
+}

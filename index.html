@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<script>
+    // Verificação imediata ao carregar a página
+    if (!sessionStorage.getItem('usuarioLogado')) {
+        window.location.href = 'login.html';
+    }
+</script>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">

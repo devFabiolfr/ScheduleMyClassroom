@@ -246,3 +246,29 @@ if (document.getElementById('formularioRecuperacao')) {
         }, 2000);
     });
 }
+
+// Verificação de usuário logado e logout
+function verificarUsuarioLogado() {
+    const usuarioLogado = JSON.parse(sessionStorage.getItem('usuarioLogado'));
+    
+    if (!usuarioLogado && window.location.pathname.includes('index.html')) {
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // Atualiza nome do usuário na navbar
+    if (usuarioLogado && document.getElementById('nomeUsuario')) {
+        document.getElementById('nomeUsuario').textContent = usuarioLogado.nome || 'Usuário';
+    }
+    
+    // Configura logout
+    if (document.getElementById('btnLogout')) {
+        document.getElementById('btnLogout').addEventListener('click', function() {
+            sessionStorage.removeItem('usuarioLogado');
+            window.location.href = 'login.html';
+        });
+    }
+}
+
+// Execute quando a página carregar
+document.addEventListener('DOMContentLoaded', verificarUsuarioLogado);

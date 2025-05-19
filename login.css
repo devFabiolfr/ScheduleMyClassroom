@@ -132,3 +132,31 @@ input#cpf {
     color: #155724;
     display: none; /* Será mostrado via JS */
 }
+
+/* Estilos para a navbar */
+.navbar {
+    padding: 0.5rem 1rem;
+}
+
+.navbar-brand img {
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+#btnLogout {
+    transition: all 0.3s ease;
+}
+
+#btnLogout:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Espaçamento responsivo */
+@media (max-width: 576px) {
+    .navbar-brand span {
+        display: none;
+    }
+    #nomeUsuario {
+        display: none;
+    }
+}

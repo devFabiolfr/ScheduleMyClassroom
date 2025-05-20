@@ -7,7 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
         '16:00-16:50',
         '16:50-17:40',
         '17:40-18:30',
-        '18:45-19:35'
+        '18:45-19:35',
+        '19:35-20:25',
+        '20:35-21:25',
+        '21:25-22:15'
     ];
 
     const days = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];

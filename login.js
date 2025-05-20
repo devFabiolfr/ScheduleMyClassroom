@@ -1,4 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
+// 1. Toggle de senha
+    const toggleSenha = document.getElementById('toggleSenha');
+    const senhaInput = document.getElementById('senha');
+    
+    if (toggleSenha && senhaInput) {
+        toggleSenha.addEventListener('click', function() {
+            const type = senhaInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            senhaInput.setAttribute('type', type);
+            
+            // Alterna o ícone
+            const icon = this.querySelector('i');
+            icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+        });
+    }
+    
     // Banco de dados simulado (armazenado no localStorage)
     if (!localStorage.getItem('usuariosRegistrados')) {
         localStorage.setItem('usuariosRegistrados', JSON.stringify([]));

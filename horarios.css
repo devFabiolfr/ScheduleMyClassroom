@@ -1,0 +1,74 @@
+
+.btn {
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: RoyalBlue;
+}
+
+.table td {
+    padding: 1.25rem;
+    vertical-align: middle;
+    user-select: none;
+}
+
+.table .form-check {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40px;
+}
+
+table.table.table-bordered.table-sm {
+  padding: 0;
+  border-spacing: 0;
+  text-align: center;
+  padding: 20px;
+}
+
+td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 20px;
+  font-weight: bold;
+  font-size: 15;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+
+td .form-check {
+  cursor: pointer;
+}
+
+.form-check {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+input.form-check-input {
+  margin-top: 0.3rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  appearance: none;
+  border: 1px solid #333;
+  border-radius: 0.25rem;
+  background-color: #333;
+  border-color: gray;
+  cursor: pointer;
+}
+
+input.form-check-input:checked {
+  background-color: lime;
+  border-color: #3a3838;
+  cursor: pointer;
+}
+

@@ -131,3 +131,23 @@ button {
         font-size: 14px;
     }
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border: 2px solid #000; /* Borda preta ao redor de toda a tabela */
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #000; /* Bordas pretas em todas as células */
+}
+
+th {
+    background-color: #3498db;
+    color: white;
+    font-weight: bold;
+    border-bottom: 2px solid #000; /* Borda mais grossa abaixo do cabeçalho */
+}

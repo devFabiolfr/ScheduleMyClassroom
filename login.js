@@ -13,60 +13,82 @@ document.addEventListener('DOMContentLoaded', function() {
             icon.className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
         });
     }
-    
+
     // Banco de dados simulado (armazenado no localStorage)
     if (!localStorage.getItem('usuariosRegistrados')) {
         localStorage.setItem('usuariosRegistrados', JSON.stringify([]));
     }
 
-    // Função para registrar usuário
     if (document.getElementById('formularioRegistro')) {
-        const formularioRegistro = document.getElementById('formularioRegistro');
+    const formularioRegistro = document.getElementById('formularioRegistro');
+    
+    formularioRegistro.addEventListener('submit', function(e) {
+        e.preventDefault();
         
-        formularioRegistro.addEventListener('submit', function(e) {
-            e.preventDefault();
+        const nome = document.getElementById('nomeCompleto').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const matricula = document.getElementById('matricula').value.trim();
+        const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+        const senha = document.getElementById('senha').value;
+        const confirmarSenha = document.getElementById('confirmarSenha')?.value;
+        
+        // Validações iniciais
+        if (!validarCPF(cpf)) {
+            alert('CPF inválido!');
+            return false;
+        }
+        
+        if (senha.length < 8) {
+            alert('A senha deve ter no mínimo 8 caracteres!');
+            return false;
+        }
+        
+        if (confirmarSenha && senha !== confirmarSenha) {
+            alert('As senhas não coincidem!');
+            return false;
+        }
+        
+        // Verificação robusta de usuário existente
+        const usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados')) || [];
+        const usuarioExistente = usuarios.find(u => {
+            return u.email === email || 
+                   u.matricula === matricula || 
+                   u.cpf === cpf;
+        });
+        
+        if (usuarioExistente) {
+            let mensagem = 'Usuário já cadastrado com ';
+            if (usuarioExistente.email === email) mensagem += 'este e-mail';
+            else if (usuarioExistente.matricula === matricula) mensagem += 'esta matrícula';
+            else mensagem += 'este CPF';
             
-            const nome = document.getElementById('nomeCompleto').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const matricula = document.getElementById('matricula').value.trim();
-            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
-            const senha = document.getElementById('senha').value;
-            
-            // Validações
-            if (!validarCPF(cpf)) {
-                alert('CPF inválido!');
-                return;
-            }
-            
-            if (senha.length < 8) {
-                alert('A senha deve ter no mínimo 8 caracteres!');
-                return;
-            }
-            
-            // Verifica se usuário já existe
-            const usuarios = JSON.parse(localStorage.getItem('usuariosRegistrados'));
-            const usuarioExistente = usuarios.find(u => u.email === email || u.matricula === matricula || u.cpf === cpf);
-            
-            if (usuarioExistente) {
-                alert('Usuário já cadastrado com estes dados!');
-                return;
-            }
-            
-            // Adiciona novo usuário
+            alert(mensagem + '!');
+            return false; // Isso IMPEDE o registro
+        }
+        
+        // Mostrar loading
+        const btnSubmit = this.querySelector('button[type="submit"]');
+        const originalText = btnSubmit.innerHTML;
+        btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Registrando...';
+        btnSubmit.disabled = true;
+        
+        // Simular cadastro (substitua por AJAX em produção)
+        setTimeout(() => {
             usuarios.push({
                 nome,
                 email,
                 matricula,
                 cpf,
-                senha // Em produção, isso deveria ser uma hash (não armazene senhas em claro!)
+                senha // Em produção: bcrypt.hashSync(senha, 10)
             });
             
             localStorage.setItem('usuariosRegistrados', JSON.stringify(usuarios));
             
             alert('Cadastro realizado com sucesso!');
             window.location.href = 'login.html';
-        });
-    }
+        }, 1500);
+    });
+}
 
     // Função para login
     if (document.getElementById('formularioLogin')) {
@@ -173,47 +195,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 alert('Por favor, preencha todos os campos.');
             }
-        });
-    }
-
-    // 5. Formulário de Registro
-    const formularioRegistro = document.getElementById('formularioRegistro');
-    if (formularioRegistro) {
-        formularioRegistro.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
-            const senha = document.getElementById('senha').value;
-            const confirmarSenha = document.getElementById('confirmarSenha').value;
-            
-            // Validação do CPF
-            if (!validarCPF(cpf)) {
-                alert('Por favor, insira um CPF válido!');
-                document.getElementById('cpf').focus();
-                return;
-            }
-            
-            // Validação de senha
-            if (senha.length < 8) {
-                alert('A senha deve ter no mínimo 8 caracteres!');
-                return;
-            }
-            
-            if (senha !== confirmarSenha) {
-                alert('As senhas não coincidem!');
-                return;
-            }
-            
-            // Simulação de cadastro
-            const btnSubmit = this.querySelector('button[type="submit"]');
-            const originalText = btnSubmit.innerHTML;
-            btnSubmit.innerHTML = '<span class="loading-spinner"></span> Registrando...';
-            btnSubmit.disabled = true;
-            
-            setTimeout(function() {
-                alert('Cadastro realizado com sucesso! Redirecionando para login...');
-                window.location.href = 'login.html';
-            }, 2000);
         });
     }
 
